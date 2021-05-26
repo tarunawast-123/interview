@@ -100,15 +100,21 @@ const chatSockets=require('./config/chat_sockets').chatSockets(server);
 mongoose
 .connect(MONGODB_URI,{useNewUrlParser: true, useUnifiedTopology: true,useFindAndModify:false})
 .then(result => {
+
+  mongoose.connection.once('open', function(){
+          console.log('Conection has been made!');
+              }).on('error', function(error){
+           console.log('Error is: ', error);
+            });
+
   server.listen(port, async function (err) {
   if (err) {
     return console.log(`Error in running the server: ${err}`);
   }
-  
+
   return console.log(`Server fired up on port: ${port}`);
 });
 })
 .catch(err => {
   console.log(err);
 });
-
